@@ -11,17 +11,37 @@ function Ball:init(x, y, diameter)
 end
 
 function Ball:update(dt)
-    offset = 5
-    if self.x <= offset or self.x + self.diameter + offset >= VIRTUAL_WIDTH then
+    rebound = 2
+    offset_x = 87
+    friction = 4
+    new_friction = 50
+
+    if self.x <= offset_x then
         self.dx = -self.dx
+        self.x = offset_x + rebound
+        friction = new_friction
     end
-    if self.y <= offset or self.y + self.diameter + offset >= VIRTUAL_HEIGHT then
+    if self.x + offset_x >= VIRTUAL_WIDTH then
+        self.dx = -self.dx
+        self.x = VIRTUAL_WIDTH - (offset_x + rebound)
+        friction = new_friction
+    end
+    offset_y_t = 335
+    if self.y <= offset_y_t then
         self.dy = -self.dy
+        self.y = offset_y_t + rebound
+        friction = new_friction
+    end
+    offset_y_b = 45
+    if self.y + self.diameter + offset_y_b >= VIRTUAL_HEIGHT then
+        self.dy = -self.dy
+        self.y = VIRTUAL_HEIGHT - (self.diameter + offset_y_b + rebound)
+        friction = new_friction
     end
 
     self.x = self.x + self.dx * dt
     self.y = self.y + self.dy * dt
-    friction = 4
+
     dv = math.sqrt(self.dx ^ 2 + self.dy ^ 2)
     if dv < 0 then
         dv2 = math.min(dv + friction, 0)
@@ -37,5 +57,5 @@ end
 
 function Ball:render()
     love.graphics.draw(self.image, self.x, self.y, self.r, self.diameter/self.image:getWidth(),
-        self.diameter/self.image:getWidth(), self.image:getWidth() / 2, self.image:getHeight() / 2)
+    self.diameter/self.image:getWidth(), self.image:getWidth() / 2, self.image:getHeight() / 2)
 end

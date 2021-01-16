@@ -1,7 +1,9 @@
 Class = require 'class'
 push = require 'push'
 require 'Ball'
-
+background = love.graphics.newImage('pic/bg.png')
+bg_width = background:getWidth()
+bg_height = background:getHeight()
 VIRTUAL_WIDTH = 1000
 VIRTUAL_HEIGHT = 800
 WINDOW_WIDTH = 1000
@@ -21,7 +23,7 @@ function love.load()
         fullscreen = false,
         resizable = true
     })
-    ball = Ball(VIRTUAL_WIDTH / 2 - 20, VIRTUAL_HEIGHT / 2 - 20,40)
+    ball = Ball(VIRTUAL_WIDTH / 2 - 10, 520, 40)
     gamestate = 0
 end
 
@@ -36,8 +38,8 @@ function love.keypressed(key)
     end
     if key == 'f' then
         gamestate = 1
-        ball.dx = math.random(-200, 200)
-        ball.dy = math.random(-200, 200)
+        ball.dx = math.random(-300, 300)
+        ball.dy = math.random(-300, 300)
     end
 end
 function love.update(dt)
@@ -53,7 +55,7 @@ function love.draw()
     love.graphics.clear(40/255, 45/255, 52/255, 255/255)
     
     -- render different things depending on which part of the game we're in
-    
+    love.graphics.draw(background, 0, 250, 0, VIRTUAL_WIDTH / bg_width, (VIRTUAL_HEIGHT - 250) / bg_height)
     ball:render()
     displayFPS()
 
